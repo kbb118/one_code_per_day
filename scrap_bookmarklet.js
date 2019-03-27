@@ -8,8 +8,8 @@ javascript: (function() {
         return ' > ' + line
     }));
     lines.push('');
-    lines.push('[hr.icon]')
-    lines.push('[scrapped by bookmarklet]');
+    lines.push('[hr.icon]');
+    lines.push('[bookmark]');
     var body = encodeURIComponent(lines.join('\n'));
     window.open('https://scrapbox.io/kbbkbb524/' + encodeURIComponent(title.trim()) + '?body=' + body)
 })();
