@@ -9,77 +9,60 @@
 
 N = 8 -- board size
 
-function laceok(board, i, j)
-    for k = 1, i - 1 do
-        io.write(k, "行目", j,"列チェック")
-        if board[k] == j then
-            io.write("縦あうと\n")
-            return false
-        elseif board[k] == j - (i - k) then
-            io.write("左ななめアウト\n")
-            return false
-        elseif board[k] == j + (i - k) then
-            io.write("みぎななめアウト\n")
-            return false
+function isplaceok(brd, row, pos)
+
+    -- row 以下の行をすべて調べる
+    for i=1,row-1 do
+        -- 1,row-1 に pos があったらだめ
+        if (brd[i] == pos) or 
+           (brd[i] == pos - row + i ) or
+           (brd[i] == pos + row - i ) then
+           return false
         end
     end
 
-    io.write(i, "行目", j,"列に置けた\n")
+    -- 置ける
     return true
 end
 
-function printsolution (board)
-    for i = 1, N do
-        io.write(board[i])
-        for j = 1, board[i]-1 do
-            io.write(" ")
-        end
-        io.write("x\n")
+-- 8x8 のbrd の row 行目にクイーンを配置する
+-- 再帰関数
+function addqueen(brd, row)
+    if row == N+1 then
+        return true
     end
-    io.write("\n")
-end
 
-function solveeightqueen(a)
-    board = {a}
-    for i = 2, N do
-        for j = 1, N do
-           if isplaceok(board, i, j) then
-               board[i] = j
-               break
-           elseif j == N then
-               print("fuck!!")
-               i = i - 2
-               j = board[i] + 1
-           end
-        end
-    end
-    printsolution(board)
-end
-
--- solveeightqueen(3)
-
-function isplaceok(a, n, c)
-    for i = 1, n - 1 do
-        if (a[i] == c ) or
-            (a[i] - i == c - n) or
-            (a[i] + i == c + n) then
-            return false
-        end
-    end
-    return true
-end
-
-function addqueen(a, n)
-    if n > N then
-        printsolution(a)
-    else
-        for c = 1, N do
-            if isplaceok(a, n, c) then
-                a[n] = c
-                addqueen(a, n+1)
+    -- row のどこに置けるか順に確かめる 
+    for pos=1,N do 
+        -- 条件を満たしたら置く。
+        if isplaceok(brd, row, pos) then
+            brd[row] = pos
+            if addqueen(brd, row+1) then
+                return brd -- ここでリターンする＝＝最初に見つけた答えだけ出す
             end
         end
     end
+    
+    -- 置ける場所がなかった。
+    return false
 end
 
-addqueen({},1)
+SOLCNT = 1
+
+function printbrd(brd)
+    io.write("solution ", SOLCNT, "\n")
+    for i=1,N do
+        for j=1,N do
+            io.write(brd[i] == j and "X" or "-", " ")
+        end
+        io.write("\n")
+    end
+    io.write("\n")
+    SOLCNT=SOLCNT+1
+end
+
+function main()
+    printbrd(addqueen({},1))
+end
+
+main()
