@@ -16,3 +16,8 @@ end
 print('enter a number')
 a = io.read("*n")
 print(fact(a))
+
+a = {} -- 連想配列
+a["hoge"] = "HOGE"
+print(a.hoge) -- a.hoge は a["hoge"] の糖衣構文
+
