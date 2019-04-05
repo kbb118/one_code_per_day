@@ -37,7 +37,21 @@
                                    (bucket living-room)
                                    (chain garden)
                                    (frog garden)))
-(defun objetc-at (loc objs obj-locs)
+(defun objects-at (loc objs obj-locs)
   (labels ((at-loc-p (obj) ; 真偽値を返す関数は -p をつける慣わし
               (eq (cadr (assoc obj obj-locs)) loc)))
     (remove-if-not #'at-loc-p objs))) ; 真を返す要素だけをフィルタする
+
+(defun describe-objects (loc objs obj-loc)
+  (labels ((describe-obj (obj)
+            `(you see a ,obj on the floor.)))
+    (apply #'append (mapcar #'describe-obj (objects-at loc objs obj-loc)))))
+
+(defparameter *location* 'living-room)
+
+(defun look()
+  (append (describe-location *location* *nodes*)
+          (describe-paths *location* *edges*)
+          (describe-objects *location* *objects* *object-locations*)))
+
+(print (look))
