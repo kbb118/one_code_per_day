@@ -1,11 +1,18 @@
 FROM ubuntu:bionic
 
+# smlsharp のビルド&実行環境コンテナを作成
+#
 # install following tools and libraries
 # - GNU Multiple Precision Arithmetic Library
 # - MassiveThreads
 # - LLVM 3.7.1
 # - YAJL 2.x
-RUN apt update && apt install -y build-essential curl m4 python
+#
+# smlsharp の make がコケるので
+# https://github.com/smlsharp/smlsharp/issues/51 を参考に Makefile をいじっている
+
+
+RUN apt update && apt install -y build-essential curl m4 python cmake
     && curl -SLO https://gmplib.org/download/gmp/gmp-6.1.2.tar.xz \
     && tar xvf gmp-6.1.2.tar.xz && cd gmp-6.1.2 \
     && ./configure && make && make install \
@@ -25,6 +32,8 @@ RUN apt update && apt install -y build-essential curl m4 python
     && cd ..\
     && curl -SLO http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-3.4.0.tar.gz \
     && tar xzvf smlsharp-3.4.0.tar.gz && cd smlsharp-3.4.0 \
-    && ./configure && make && make install \
+    && ./configure \
+    && sed -i -e 's/\\$/-relocation-model=pic ./Makefile \\/' \
+    && make && make install \
     && cd ../ 
 
