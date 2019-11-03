@@ -12,7 +12,7 @@ FROM ubuntu:bionic
 # https://github.com/smlsharp/smlsharp/issues/51 を参考に Makefile をいじっている
 
 
-RUN apt update && apt install -y build-essential curl m4 python cmake
+RUN apt update && apt install -y build-essential curl m4 python cmake \
     && curl -SLO https://gmplib.org/download/gmp/gmp-6.1.2.tar.xz \
     && tar xvf gmp-6.1.2.tar.xz && cd gmp-6.1.2 \
     && ./configure && make && make install \
