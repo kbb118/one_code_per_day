@@ -27,7 +27,7 @@ RUN apt update && apt install -y build-essential curl m4 python cmake \
     && make && make install \
     && cd ../ \
     && curl -SLO https://github.com/lloyd/yajl/archive/2.1.0.tar.gz \
-    && tar xzvf 2.1.0.tar.gz && cd 2.1.0 \
+    && tar xzvf 2.1.0.tar.gz && cd yajl-2.1.0 \
     && ./configure && make && make install \
     && cd ..\
     && curl -SLO http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-3.4.0.tar.gz \
