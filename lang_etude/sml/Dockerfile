@@ -33,7 +33,7 @@ RUN apt update && apt install -y build-essential curl m4 python cmake \
     && curl -SLO http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-3.4.0.tar.gz \
     && tar xzvf smlsharp-3.4.0.tar.gz && cd smlsharp-3.4.0 \
     && ./configure \
-    && sed -i -e 's/\\$/-relocation-model=pic ./Makefile \\/' \
+    && sed -i -e '/LLC/s/\\$/-relocation-model=pic ./Makefile \\/' \
     && make && make install \
     && cd ../ 
 
