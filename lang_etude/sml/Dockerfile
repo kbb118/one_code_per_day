@@ -29,11 +29,12 @@ RUN apt update && apt install -y build-essential curl m4 python cmake \
     && curl -SLO https://github.com/lloyd/yajl/archive/2.1.0.tar.gz \
     && tar xzvf 2.1.0.tar.gz && cd yajl-2.1.0 \
     && ./configure && make && make install \
-    && cd ..\
+    && cd ../ \
     && curl -SLO http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-3.4.0.tar.gz \
     && tar xzvf smlsharp-3.4.0.tar.gz && cd smlsharp-3.4.0 \
+    && ldconfig \
     && ./configure \
-    && sed -i -e '/LLC/s/\\$/-relocation-model=pic ./Makefile \\/' \
+    && sed -i -e '/LLC/s/\\$/-relocation-model=pic \\/' ./Makefile \
     && make && make install \
     && cd ../ 
 
