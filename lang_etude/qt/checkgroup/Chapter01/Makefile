@@ -12,9 +12,9 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -std=gnu++1y -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+DEFINES       = -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -g -std=gnu++1y -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/kob/Qt5.9.0/5.9/gcc_64/bin/qmake
 DEL_FILE      = rm -f
@@ -38,7 +38,7 @@ COMPRESS      = gzip -9f
 DISTNAME      = ch01-todo1.0.0
 DISTDIR = /home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01/.tmp/ch01-todo1.0.0
 LINK          = g++
-LFLAGS        = -Wl,-O1 -Wl,-rpath,/home/kob/Qt5.9.0/5.9/gcc_64/lib
+LFLAGS        = -Wl,-rpath,/home/kob/Qt5.9.0/5.9/gcc_64/lib
 LIBS          = $(SUBLIBS) -L/home/kob/Qt5.9.0/5.9/gcc_64/lib -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
@@ -674,7 +674,7 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/features/data/dummy.cpp
-	g++ -pipe -O2 -std=gnu++1y -Wall -W -dM -E -o moc_predefs.h /home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/features/data/dummy.cpp
+	g++ -pipe -g -std=gnu++1y -Wall -W -dM -E -o moc_predefs.h /home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: moc_MainWindow.cpp moc_SubWindow.cpp moc_Task.cpp
 compiler_moc_header_clean:
@@ -892,6 +892,21 @@ moc_SubWindow.cpp: /home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QWidget \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qvector2d.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore/QString \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QPushButton \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qicon.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QCheckBox \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qcheckbox.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QVBoxLayout \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QScrollArea \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qscrollarea.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qframe.h \
 		SubWindow.h \
 		moc_predefs.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc
@@ -1135,6 +1150,20 @@ main.o: main.cpp MainWindow.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QWidget \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore/QString \
 		SubWindow.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QPushButton \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QCheckBox \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qcheckbox.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QVBoxLayout \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QScrollArea \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qscrollarea.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qframe.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QApplication \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qapplication.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1408,10 +1437,24 @@ SubWindow.o: SubWindow.cpp SubWindow.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qvector2d.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore/QString \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QPushButton \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qicon.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QCheckBox \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qcheckbox.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QVBoxLayout \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QScrollArea \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qscrollarea.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qframe.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QInputDialog \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qinputdialog.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qlineedit.h \
-		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qframe.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qtextcursor.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qtextformat.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/qpen.h \
