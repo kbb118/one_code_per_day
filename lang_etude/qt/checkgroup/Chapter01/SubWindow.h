@@ -22,7 +22,7 @@ public:
     bool isCompleted() const;
 
 public slots:
-    void rename();
+    void add();
 
 signals:
     void removed(SubWindow* task);
@@ -32,7 +32,7 @@ private slots:
     void checked(bool checked);
 
 private:
-    QPushButton *mEditButton;
+    QPushButton *mAddButton;
     QPushButton *mRemoveButton;
     QCheckBox *mCheckBox;
 

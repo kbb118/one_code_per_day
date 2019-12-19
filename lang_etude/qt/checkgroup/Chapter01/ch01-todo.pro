@@ -15,10 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
     MainWindow.cpp \
     SubWindow.cpp \
+    CheckGroup.cpp \
     Task.cpp
 
 HEADERS  += MainWindow.h \
     SubWindow.h \
+    CheckGroup.h \
     Task.h
 
 FORMS    += MainWindow.ui \

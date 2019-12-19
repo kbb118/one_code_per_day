@@ -1,36 +1,24 @@
 #include "SubWindow.h"
+#include "CheckGroup.h"
 
 #include <QInputDialog>
 #include <QDebug>
 
 SubWindow::SubWindow(const QString& name, QWidget *parent) :
         QWidget(parent),
-        mEditButton(new QPushButton(this)),
-        mRemoveButton(new QPushButton(this)),
+        mAddButton(new QPushButton("Add",this)),
+        mRemoveButton(new QPushButton("Remove", this)),
         mCheckBox(new QCheckBox(this)),
         mVLayout(new QVBoxLayout(this))
 {
     setName(name);
     mVLayout->addWidget(mCheckBox);
-    mVLayout->addWidget(mEditButton);
+    mVLayout->addWidget(mAddButton);
     mVLayout->addWidget(mRemoveButton);
 //    mVLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
-    auto w1_1 = new QWidget();
-    auto scrl = new QScrollArea();
-    // 今は無くてもいいっぽいが、動的に追加するときに必要かな?
-    //scrl->setWidgetResizable(true);
-
-    auto subLayout = new QVBoxLayout(w1_1);
-    for ( int i=0; i<30; i++ )
-    {
-        auto c = new QCheckBox(QString::number(i), w1_1);
-        subLayout->addWidget(c);
-    }
-    scrl->setWidget(w1_1);
-
-    //ここで w1_1 を add するとおかしくなる。
-    mVLayout->addWidget(scrl);
+    CheckGroup *cg = new CheckGroup("my", nullptr);
+    mVLayout->addWidget(cg);
 
     //w2, w3...
     for ( int i=0; i<3; i++ )
@@ -39,10 +27,8 @@ SubWindow::SubWindow(const QString& name, QWidget *parent) :
         mVLayout->addWidget(c);
     }
 
-    connect(mEditButton, &QPushButton::clicked, this, &SubWindow::rename);
-    connect(mRemoveButton, &QPushButton::clicked, [this] {
-        emit removed(this);
-    });
+    connect(mAddButton, &QPushButton::clicked, cg, &CheckGroup::add);
+//    connect(mRemoveButton, &QPushButton::clicked, cg, &CheckGroup::remove);
     connect(mCheckBox, &QCheckBox::toggled, this, &SubWindow::checked);
 }
 
@@ -66,15 +52,10 @@ bool SubWindow::isCompleted() const
    return mCheckBox->isChecked();
 }
 
-void SubWindow::rename()
+void SubWindow::add()
 {
-    bool ok;
-    QString value = QInputDialog::getText(this, tr("Edit task"),
-                                          tr("SubWindow name"), QLineEdit::Normal,
-                                          this->name(), &ok);
-    if (ok && !value.isEmpty()) {
-        setName(value);
-    }
+    auto c = new QCheckBox("newbie", this);
+    mVLayout->addWidget(c);
 }
 
 void SubWindow::checked(bool checked)
