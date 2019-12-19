@@ -4,51 +4,39 @@
 #include <QDebug>
 
 SubWindow::SubWindow(const QString& name, QWidget *parent) :
-        QWidget(parent)
+        QWidget(parent),
+        mEditButton(new QPushButton(this)),
+        mRemoveButton(new QPushButton(this)),
+        mCheckBox(new QCheckBox(this)),
+        mVLayout(new QVBoxLayout(this))
 {
-    /*
-      this-superVlayout
-      \_w1
-        \_w1_1-vlayout
-      \_w2
-      \_w3
-     */
-
-
-    auto w1 = new QWidget(this);
-    auto w1_1 = new QWidget(w1);
-
-    auto scrl = new QScrollArea(w1);
-    scrl->setWidgetResizable(true);
-
-    // w の子にする。
-    mCheckBox = new QCheckBox(w1_1);
-    mEditButton = new QPushButton(w1_1);
-    mRemoveButton = new QPushButton(w1_1);
-    mVLayout = new QVBoxLayout(w1_1);
     setName(name);
     mVLayout->addWidget(mCheckBox);
     mVLayout->addWidget(mEditButton);
     mVLayout->addWidget(mRemoveButton);
-    mVLayout->setSizeConstraint(QLayout::SetMinimumSize);
+//    mVLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
+    auto w1_1 = new QWidget();
+    auto scrl = new QScrollArea();
+    // 今は無くてもいいっぽいが、動的に追加するときに必要かな?
+    //scrl->setWidgetResizable(true);
+
+    auto subLayout = new QVBoxLayout(w1_1);
     for ( int i=0; i<30; i++ )
     {
         auto c = new QCheckBox(QString::number(i), w1_1);
-        mVLayout->addWidget(c);
+        subLayout->addWidget(c);
     }
     scrl->setWidget(w1_1);
 
-    auto superLayout = new QVBoxLayout(this);
-
     //ここで w1_1 を add するとおかしくなる。
-    superLayout->addWidget(scrl);
+    mVLayout->addWidget(scrl);
 
     //w2, w3...
     for ( int i=0; i<3; i++ )
     {
         auto c = new QCheckBox("super", this);
-        superLayout->addWidget(c);
+        mVLayout->addWidget(c);
     }
 
     connect(mEditButton, &QPushButton::clicked, this, &SubWindow::rename);
