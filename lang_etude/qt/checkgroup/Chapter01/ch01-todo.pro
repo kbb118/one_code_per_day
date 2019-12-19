@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui 3dinput
 CONFIG   += c++14 debug
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

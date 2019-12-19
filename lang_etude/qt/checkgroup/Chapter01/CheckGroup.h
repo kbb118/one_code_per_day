@@ -16,6 +16,10 @@ class CheckGroup : public QScrollArea
 public:
     explicit CheckGroup(const QString& name, QWidget *parent = 0);
     ~CheckGroup();
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    bool eventFilter(QObject *o, QEvent *e);
 
 public slots:
     void add();

@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_3DINPUT_LIB -DQT_3DCORE_LIB -DQT_GAMEPAD_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++1y -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++
+INCPATH       = -I. -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DInput -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DCore -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGamepad -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtNetwork -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/kob/Qt5.9.0/5.9/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -39,7 +39,7 @@ DISTNAME      = ch01-todo1.0.0
 DISTDIR = /home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01/.tmp/ch01-todo1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/kob/Qt5.9.0/5.9/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/kob/Qt5.9.0/5.9/gcc_64/lib -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/home/kob/Qt5.9.0/5.9/gcc_64/lib -lQt53DInput -lQt53DCore -lQt5Gamepad -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -446,8 +446,12 @@ Makefile: ch01-todo.pro /home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++/qmake.con
 		/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/features/yacc.prf \
 		/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/features/lex.prf \
 		ch01-todo.pro \
+		/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt53DInput.prl \
+		/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt53DCore.prl \
+		/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Gamepad.prl \
 		/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Widgets.prl \
 		/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Gui.prl \
+		/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Network.prl \
 		/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Core.prl
 	$(QMAKE) -o Makefile ch01-todo.pro
 /home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/features/spec_pre.prf:
@@ -630,8 +634,12 @@ Makefile: ch01-todo.pro /home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++/qmake.con
 /home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/features/yacc.prf:
 /home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/features/lex.prf:
 ch01-todo.pro:
+/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt53DInput.prl:
+/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt53DCore.prl:
+/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Gamepad.prl:
 /home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Widgets.prl:
 /home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Gui.prl:
+/home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Network.prl:
 /home/kob/Qt5.9.0/5.9/gcc_64/lib/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ch01-todo.pro
@@ -795,7 +803,7 @@ moc_MainWindow.cpp: /home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QMainWindow \
 		MainWindow.h \
 		moc_predefs.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc
-	/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++ -I/home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01 -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include MainWindow.h -o moc_MainWindow.cpp
+	/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++ -I/home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01 -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DInput -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DCore -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGamepad -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtNetwork -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include MainWindow.h -o moc_MainWindow.cpp
 
 moc_SubWindow.cpp: /home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QWidget \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qwidget.h \
@@ -916,7 +924,7 @@ moc_SubWindow.cpp: /home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QWidget \
 		SubWindow.h \
 		moc_predefs.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc
-	/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++ -I/home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01 -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include SubWindow.h -o moc_SubWindow.cpp
+	/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++ -I/home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01 -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DInput -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DCore -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGamepad -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtNetwork -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include SubWindow.h -o moc_SubWindow.cpp
 
 moc_CheckGroup.cpp: /home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QWidget \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qwidget.h \
@@ -1037,7 +1045,7 @@ moc_CheckGroup.cpp: /home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QWidget \
 		CheckGroup.h \
 		moc_predefs.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc
-	/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++ -I/home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01 -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include CheckGroup.h -o moc_CheckGroup.cpp
+	/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++ -I/home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01 -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DInput -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DCore -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGamepad -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtNetwork -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include CheckGroup.h -o moc_CheckGroup.cpp
 
 moc_Task.cpp: /home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QWidget \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qwidget.h \
@@ -1143,7 +1151,7 @@ moc_Task.cpp: /home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QWidget \
 		Task.h \
 		moc_predefs.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc
-	/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++ -I/home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01 -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include Task.h -o moc_Task.cpp
+	/home/kob/Qt5.9.0/5.9/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/kob/Qt5.9.0/5.9/gcc_64/mkspecs/linux-g++ -I/home/kob/clone/one_code_per_day/lang_etude/qt/checkgroup/Chapter01 -I/home/kob/Qt5.9.0/5.9/gcc_64/include -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DInput -I/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DCore -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGamepad -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtNetwork -I/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include Task.h -o moc_Task.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1708,6 +1716,13 @@ CheckGroup.o: CheckGroup.cpp CheckGroup.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qscrollarea.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qframe.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DInput/QMouseEvent \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DInput/qmouseevent.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DInput/qt3dinput_global.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/Qt3DCore/qt3dcore_global.h \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore/QtGlobal \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtCore/QObject \
+		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtGui/QMouseEvent \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/QInputDialog \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qinputdialog.h \
 		/home/kob/Qt5.9.0/5.9/gcc_64/include/QtWidgets/qlineedit.h \
