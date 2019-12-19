@@ -7,9 +7,19 @@ SubWindow::SubWindow(const QString& name, QWidget *parent) :
         QWidget(parent),
         mEditButton(new QPushButton(this)),
         mRemoveButton(new QPushButton(this)),
-        mCheckBox(new QCheckBox(this))
+        mCheckBox(new QCheckBox(this)),
+        mVLayout(new QVBoxLayout(this))
 {
     setName(name);
+
+    mVLayout->addWidget(mCheckBox);
+    mVLayout->addWidget(mEditButton);
+    mVLayout->addWidget(mRemoveButton);
+
+    for ( int i=0; i<30; i++ )
+    {
+        mVLayout->addWidget(new QCheckBox(QString::number(i), this));
+    }
 
     connect(mEditButton, &QPushButton::clicked, this, &SubWindow::rename);
     connect(mRemoveButton, &QPushButton::clicked, [this] {

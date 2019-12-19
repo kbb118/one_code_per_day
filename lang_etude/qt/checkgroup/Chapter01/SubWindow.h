@@ -6,6 +6,9 @@
 #include <QPushButton>
 #include <QCheckBox>
 
+#include <QVBoxLayout>
+#include <QScrollArea>
+
 class SubWindow : public QWidget
 {
     Q_OBJECT
@@ -32,6 +35,8 @@ private:
     QPushButton *mEditButton;
     QPushButton *mRemoveButton;
     QCheckBox *mCheckBox;
+
+    QVBoxLayout *mVLayout;
 };
 
 #endif // SUBWINDOW_H
