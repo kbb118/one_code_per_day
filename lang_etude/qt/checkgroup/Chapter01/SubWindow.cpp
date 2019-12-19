@@ -5,14 +5,17 @@
 
 SubWindow::SubWindow(const QString& name, QWidget *parent) :
         QWidget(parent),
+        mEditButton(new QPushButton(this)),
+        mRemoveButton(new QPushButton(this)),
+        mCheckBox(new QCheckBox(this))
 {
     setName(name);
 
-    connect(editButton, &QPushButton::clicked, this, &SubWindow::rename);
-    connect(removeButton, &QPushButton::clicked, [this] {
+    connect(mEditButton, &QPushButton::clicked, this, &SubWindow::rename);
+    connect(mRemoveButton, &QPushButton::clicked, [this] {
         emit removed(this);
     });
-    connect(checkbox, &QCheckBox::toggled, this, &SubWindow::checked);
+    connect(mCheckBox, &QCheckBox::toggled, this, &SubWindow::checked);
 }
 
 SubWindow::~SubWindow()
@@ -22,17 +25,17 @@ SubWindow::~SubWindow()
 
 void SubWindow::setName(const QString& name)
 {
-    checkbox->setText(name);
+    mCheckBox->setText(name);
 }
 
 QString SubWindow::name() const
 {
-    return checkbox->text();
+    return mCheckBox->text();
 }
 
 bool SubWindow::isCompleted() const
 {
-   return checkbox->isChecked();
+   return mCheckBox->isChecked();
 }
 
 void SubWindow::rename()
@@ -48,9 +51,9 @@ void SubWindow::rename()
 
 void SubWindow::checked(bool checked)
 {
-    QFont font(checkbox->font());
+    QFont font(mCheckBox->font());
     font.setStrikeOut(checked);
-    checkbox->setFont(font);
+    mCheckBox->setFont(font);
 
     emit statusChanged(this);
 }

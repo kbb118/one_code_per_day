@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QString>
+#include <QPushButton>
+#include <QCheckBox>
 
 class SubWindow : public QWidget
 {
@@ -27,6 +29,9 @@ private slots:
     void checked(bool checked);
 
 private:
+    QPushButton *mEditButton;
+    QPushButton *mRemoveButton;
+    QCheckBox *mCheckBox;
 };
 
 #endif // SUBWINDOW_H
