@@ -3,38 +3,32 @@
 using namespace std;
 using namespace atcoder;
 
+int op(int a, int b) { return max(a,b); }
+int e() { return 0;}
+
+int dp[300005];
 int main() {
     int n, k;
     cin>>n>>k;
     vector<int> vec;
-    fenwick_tree<int> fw(n-1);
 
     for(int i=0; i<n; i++)
     {
         int x;
         cin >> x;
         vec.push_back(x);
-        if ( i>=1 )
-            fw.add(i-1, vec.at(i)-vec.at(i-1));
     }
 
-    int ans = 0;
-    int end = 0;
-
-    int i=0;
-    int j=0;
-    while ( j<n-1 )
+    segtree<int, op, e> dp(300005);
+    for(int i=0; i<n; i++)
     {
-        if( fabs(fw.sum(i,j)) <= k )
-        {
-            ans++;
-            j++;
-            i=j;
-        }
-        else
-            j++;
+        int x=vec[i];
+        int l=x-k, r=x+k+1;
+        l=max(0,l); r=min(r,300005);
+        int now = dp.prod(l,r)+1;
+        dp.set(x, now);
     }
-    cout << ans << endl;
+    cout << dp.prod(0, 300005);
 
     return 0;
 }
