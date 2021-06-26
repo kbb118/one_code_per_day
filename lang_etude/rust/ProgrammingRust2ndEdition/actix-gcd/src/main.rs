@@ -58,7 +58,7 @@ fn get_index() -> HttpResponse {
         .body(
             r#"
                 <title>GCD Calculator</title>
-                <form action"/gcd" method="post">
+                <form action="/gcd" method="post">
                 <input type"text" name="a"/>
                 <input type"text" name="b"/>
                 <button type="submit">Compute GCD</button>
