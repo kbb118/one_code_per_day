@@ -1,0 +1,22 @@
+[package]
+name = "actix-gcd"
+version = "0.1.0"
+authors = ["Kob <kob@example.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# Each line in the [dependencies] section of Cargo.toml gives the name of a
+# crate on crates.io, and the version of that crate we would like to use. In
+# this case, we want version 1.0.8 of the actix-web crate, and version 1.0 of
+# the serde crate.
+#
+# Crates can have optional features: parts of the interfae or implementation
+# that not all users need, but that nonetheless make sense to include in that
+# crate. The serde crate offers a wonderfully terse way to handle data from web
+# forms, but according to serde's documentation, it is only available if we
+# select the crate's derive feature, so we've requested it in our Cargo.toml
+# file as shown.
+[dependencies]
+actix-web = "1.0.8"
+serde = { version = "1.0", features = ["derive"] }
