@@ -288,10 +288,7 @@ fn main() {
         crossbeam::scope(|spawner| {
             for (i, band) in bands.into_iter().enumerate() {
                 let top = rows_per_band * i;
-                let mut height = rows_per_band;
-                if top + height > bounds.1 {
-                    height = bounds.1 - top;
-                }
+                let height = band.len() / bounds.0;
                 let band_bounds = (bounds.0, height);
                 let band_p_ul = (0, top);
                 let band_p_lr = (bounds.0, top + height);
