@@ -8,8 +8,13 @@ edition = "2018"
 [dependencies]
 # The num crate on crates.io provides a complex number type we can use.
 num = "0.4"
+
 # The image crate provides functions for reading and writing a wide variety of
 # image formats, along with some basic image manipulation functions. In
 # particular, it includes an encoder for the PNG image file format, which this
 # program uses to save the final results of the calculation.
 image = "0.13.0"
+
+# The crossbeam crate provides a number of valuable concurrency facilities,
+# including a scoped thread facility that does exactly what we need here.
+crossbeam = "0.8"

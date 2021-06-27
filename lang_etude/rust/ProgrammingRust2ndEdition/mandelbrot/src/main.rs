@@ -269,6 +269,8 @@ fn main() {
     }
 
     let filename = &args[1];
+    // bounds.0 is width
+    // bounds.1 is height of the output image.
     let bounds = parse_pair::<usize>(&args[2], 'x')
         .expect("error parsing image dimensions");
     let ul = parse_complex(&args[3])
@@ -278,7 +280,29 @@ fn main() {
 
     let mut pixels = vec![0; bounds.0 * bounds.1];
 
-    render(&mut pixels, bounds, ul, lr);
+    let threads = 8;
+    let rows_per_band = bounds.1 / threads + 1;
+    {
+        let bands: Vec<&mut [u8]> =
+            pixels.chunks_mut(rows_per_band * bounds.0).collect();
+        crossbeam::scope(|spawner| {
+            for (i, band) in bands.into_iter().enumerate() {
+                let top = rows_per_band * i;
+                let mut height = rows_per_band;
+                if top + height > bounds.1 {
+                    height = bounds.1 - top;
+                }
+                let band_bounds = (bounds.0, height);
+                let band_p_ul = (0, top);
+                let band_p_lr = (bounds.0, top + height);
+                let band_ul = pixel_to_point(bounds, band_p_ul, ul, lr);
+                let band_lr = pixel_to_point(bounds, band_p_lr, ul, lr);
+                spawner.spawn(move |_| {
+                    render(band, band_bounds, band_ul, band_lr);
+                });
+            }
+        }).unwrap();
+    }
 
     write_image(&filename, &pixels, bounds)
         .expect("error writing PNG file");
