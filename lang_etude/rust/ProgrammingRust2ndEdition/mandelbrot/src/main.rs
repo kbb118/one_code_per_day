@@ -283,9 +283,32 @@ fn main() {
     let threads = 8;
     let rows_per_band = bounds.1 / threads + 1;
     {
+        // The buffer's chunks_mut method returns an iterator producing
+        // mutable, nonoverlapping slices of the buffer.
         let bands: Vec<&mut [u8]> =
             pixels.chunks_mut(rows_per_band * bounds.0).collect();
+        // The argument |spawer| {...} is a Rust closure that expects a single
+        // argument, `spawner`. Note that, unlike functions declared with fn, we
+        // don't need to declare the types of a closure's arguments; Rust will
+        // infer them, along with its return type. In this case,
+        // crossbeas::scope calls the closure, passing as the spawner argument a
+        // value the closure can use to create new threads. The crossbeam::scope
+        // function waits for all such threads to finish executeion before
+        // returning itself. This behavior allows Rust to be sure that such
+        // threads will not access their portions of pixels after it has gone
+        // out of scope, and allows us to be sure that when crossbeam::scope
+        // returns, the computation of the image is complete.
+        // If all goes well, crossbeam::scope returns OK(()), but if any of the
+        // threads we spawned panicked, it returns an Err.
+        // We call unwrap on that Result so that, in that case, we'll panic too,
+        // and the user will get a report.
         crossbeam::scope(|spawner| {
+            // Here we iterate over the pixel buffer's bands. The into_iter()
+            // iterator gives each iteration of the loop body exclusive
+            // ownership of one band, ensuring that only one thread can write to
+            // it at a time.
+            // Then, the enumerate adapter produces tuples pairing each vector
+            // element with its index.
             for (i, band) in bands.into_iter().enumerate() {
                 let top = rows_per_band * i;
                 let height = band.len() / bounds.0;
@@ -294,6 +317,12 @@ fn main() {
                 let band_p_lr = (bounds.0, top + height);
                 let band_ul = pixel_to_point(bounds, band_p_ul, ul, lr);
                 let band_lr = pixel_to_point(bounds, band_p_lr, ul, lr);
+                // We create a thread, running the closure `move |_| { ... }`.
+                // The move keyword at the front indicates that this closure
+                // takes ownership of the variables it uses; in particular, only
+                // the closure may use the mutable slice band. The argument list
+                // |_| means that the closure takes one argument, which it
+                // doesn't use (another spawner for making nested threads).
                 spawner.spawn(move |_| {
                     render(band, band_bounds, band_ul, band_lr);
                 });
