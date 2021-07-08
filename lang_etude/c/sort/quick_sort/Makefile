@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS=-Wall -Wextra
 DFLAGS=-D DEBUG -g
-INCLUDE=-I lib
-LIBS=lib/dlist.o
+INCLUDE=-I lib -I../../lib
+LIBS=lib/dlist.o -L../../lib -llogger
 DLIBS=lib/dlist.do
 TARGET=quick_sort
 DTARGET=$(TARGET)_d

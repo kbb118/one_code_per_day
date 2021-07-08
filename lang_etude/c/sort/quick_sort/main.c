@@ -1,10 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "logger.h"
 #include "dlist.h"
 
 int main(int argc, char *argv[])
 {
+    (void)argc, (void)argv;
+    Logger *logger = logger_create();
+
+    logger_start(logger);
+
     DList *head = dl_create_node(1);
     DList *tail = head;
 
@@ -26,6 +32,8 @@ int main(int argc, char *argv[])
     DList *node7 = dl_append(node6, dl_create_node(1));
     tail = node7;
     dl_dump(head);
+
+    logger_end(logger);
 
 #if 0
     // swap のテスト
