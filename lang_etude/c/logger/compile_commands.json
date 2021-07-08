@@ -1,0 +1,17 @@
+[
+ {
+  "directory": "/home/kob/go/src/github.com/kbb118/one_code_per_day/lang_etude/c/logger/bin",
+  "arguments": [
+   "gcc",
+   "-Wall",
+   "-Wextra",
+   "-I../../lib",
+   "-I../include",
+   "-DTEST",
+   "../src/logger.c",
+   "-o",
+   "test"
+  ],
+  "file": "../src/logger.c"
+ }
+]
