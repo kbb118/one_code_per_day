@@ -120,7 +120,7 @@ ssize_t slist_prepend_(SList *s, void *data) {
 static inline Node*
 _find_node(SList *s, void *data, SListCmpFunc *cmp_func) {
     for ( Node *i = s->head; i->next != NULL; i = i->next ) {
-        if ( cmp_func(data, i->next) == 0 )
+        if ( cmp_func(data, i->next->data) == 0 )
             return i;
     }
     return NULL;
@@ -268,6 +268,11 @@ show_fruit(Fruit *f)
 {
     printf("name:%s, num:%d\n", f->name, f->num);
 }
+int
+pick_fruit(Fruit *a, Fruit *b)
+{
+    return strcmp(a->name, b->name);
+}
 
 int main(void) {
     SList *s = slist_new(NULL);
@@ -277,7 +282,10 @@ int main(void) {
     slist_append(s, 9);
     slist_append(s, 19);
     slist_append(s, 1);
-
+    printf("List len is %lu\n", slist_len(s));
+    slist_remove(s, 1, _cmp_int);
+    slist_remove(s, 7, _cmp_int);
+    slist_remove(s, 19, _cmp_int);
     printf("List len is %lu\n", slist_len(s));
 
     slist_print(s, _print_int);
@@ -304,14 +312,16 @@ int main(void) {
 
 
     SList *basket = slist_new(eat_fruit);
-    slist_append(basket, harvest_fruit("orange", 100));
+    Fruit *orange = harvest_fruit("orange", 100);
+    slist_append(basket, orange);
     slist_prepend(basket, harvest_fruit("kiwi", 10));
     slist_prepend(basket, harvest_fruit("banana", 2));
     slist_append(basket, harvest_fruit("mango", 1));
+    slist_append(basket, harvest_fruit("orange", 800));
+    slist_remove(basket, orange, pick_fruit);
     slist_prepend(basket, harvest_fruit("meron", 30));
     slist_prepend(basket, harvest_fruit("grape", 140));
     slist_append(basket, harvest_fruit("peach", 180));
-    slist_append(basket, harvest_fruit("orange", 800));
     slist_print(basket, show_fruit);
 
     slist_delete(basket);
