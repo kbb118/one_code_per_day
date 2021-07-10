@@ -1,0 +1,18 @@
+[
+ {
+  "directory": "/home/kob/go/src/github.com/kbb118/one_code_per_day/lang_etude/c/slist/bin",
+  "arguments": [
+   "gcc",
+   "-Wall",
+   "-Wextra",
+   "-std=gnu99",
+   "-I../../lib",
+   "-I../include",
+   "-c",
+   "../src/slist.c",
+   "-o",
+   "slist.o"
+  ],
+  "file": "../src/slist.c"
+ }
+]
