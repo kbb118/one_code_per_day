@@ -1,12 +1,12 @@
-CC = gcc
-CFLAGS = -Wall -Wextra
-INCL = -I../../lib -I../include
+TARGET  := liblogger.a
+OBJS    := logger.o
 
-liblogger.a: logger.o
-	ar r $@ $^
+include ../../makefiles/dir.mk
+include $(MAKEFILE_DIR)/lib.mk
 
-%.o:../src/%.c
-	$(CC) $(CFLAGS) $(INCL) -c $^
-
-test: ../src/logger.c
-	$(CC) $(CFLAGS) $(INCL) -DTEST $^ -o $@
+T_DEPLIB :=
+test: logger.do
+	$(CC) $(DFLAGS) \
+	    $(INCL_DIR:%=-I%) $(LIB_DIR:%=-L%) \
+	    $(T_DEPLIB:%=-l%)
+	    -DTEST $^ -o $@
