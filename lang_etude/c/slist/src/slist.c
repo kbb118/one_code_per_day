@@ -72,7 +72,7 @@ slist_delete(SList *s) {
     free(s);
 }
 SList*
-slist_new(SListFreeFunc *free_func) {
+slist_new_(SListFreeFunc *free_func) {
     SList *s = my_calloc(1, sizeof(SList));
     if ( !s )
         return NULL;
@@ -85,9 +85,9 @@ slist_new(SListFreeFunc *free_func) {
 //
 // 追加/削除/検索/整列
 //
-ssize_t slist_append(SList *s, void *data) {
+ssize_t slist_append_(SList *s, void *data) {
     assert( s != NULL );
-    Node *n = my_calloc(1, sizeof(void*));
+    Node *n = my_calloc(1, sizeof(Node));
     if ( !n )
         return false;
     n->data = data;
@@ -98,9 +98,9 @@ ssize_t slist_append(SList *s, void *data) {
         s->tail = s->tail->next = n;
     return ++s->len;
 }
-ssize_t slist_prepend(SList *s, void *data) {
+ssize_t slist_prepend_(SList *s, void *data) {
     assert( s != NULL );
-    Node *n = my_calloc(1, sizeof(void*));
+    Node *n = my_calloc(1, sizeof(Node));
     if ( !n )
         return false;
     n->data = data;
@@ -125,7 +125,8 @@ _find_node(SList *s, void *data, SListCmpFunc *cmp_func) {
     }
     return NULL;
 }
-bool slist_remove(SList *s, void *data, SListCmpFunc *cmp_func) {
+bool
+slist_remove_(SList *s, void *data, SListCmpFunc *cmp_func) {
     assert( cmp_func );
 
     Node *found = NULL;
@@ -150,7 +151,8 @@ bool slist_remove(SList *s, void *data, SListCmpFunc *cmp_func) {
     s->len--;
     return true;
 }
-void* slist_find(SList *s, void *data, SListCmpFunc *cmp_func) {
+void*
+slist_find_(SList *s, void *data, SListCmpFunc *cmp_func) {
     assert( cmp_func );
 
     Node *found = NULL;
@@ -174,7 +176,7 @@ _merge(Node* a, Node *b, SListCmpFunc *cmp_func, Node** p_new_tail) {
     Node *a_cur = a;
     Node *b_cur = b;
     while ( a_cur != NULL && b_cur != NULL ) {
-        if ( cmp_func(a->data, b->data) <= 0 ) {
+        if ( cmp_func(a_cur->data, b_cur->data) <= 0 ) {
             tail = tail->next = a_cur;
             a_cur = a_cur->next;
         }
@@ -207,20 +209,68 @@ _sort(Node* head, SListCmpFunc *f, Node** tpp) {
     }
     a_tail->next = NULL;
 
-    return _merge(_sort(a, f, tpp), _sort(a,f, tpp), f, tpp);
+    return _merge(_sort(a, f, tpp), _sort(b, f, tpp), f, tpp);
 }
-void slist_sort(SList *s, SListCmpFunc *cmp_func) {
+void slist_sort_(SList *s, SListCmpFunc *cmp_func) {
     Node *new_tail = NULL;
     Node *new_head = _sort(s->head, cmp_func, &new_tail);
     s->head = new_head;
     s->tail = new_tail;
 }
 
+//
+// 出力
+//
+void
+slist_print_(SList *s, SListPrintFunc *print_func) {
+    assert( s != NULL );
+    for ( Node *i = s->head; i != NULL; i = i->next ) {
+        print_func(i->data);
+    }
+}
 
 #ifdef TEST
-int main(int argc, char *argv[]) {
-    SList *s = slist_new();
+#include <string.h>
+static void
+_print_int(void *data) {
+    printf("%ld\n", (int64_t)data);
+}
+static int
+_cmp_int(void *a, void *b) {
+    return (long)a - (long)b;
+}
+static void
+_print_str(void *data) {
+    printf("%s\n", (char*)data);
+}
 
+typedef struct {
+    char *name;
+    int num;
+} Fruit;
+
+Fruit *
+harvest_fruit(char *name, int num)
+{
+    Fruit *f = malloc(sizeof(Fruit));
+    f->name = strdup(name);
+    f->num = num;
+    return f;
+}
+void
+eat_fruit(Fruit *f)
+{
+    free(f->name);
+    free(f);
+}
+void
+show_fruit(Fruit *f)
+{
+    printf("name:%s, num:%d\n", f->name, f->num);
+}
+
+int main(void) {
+    SList *s = slist_new(NULL);
     slist_append(s, 1);
     slist_append(s, 5);
     slist_append(s, 7);
@@ -228,14 +278,43 @@ int main(int argc, char *argv[]) {
     slist_append(s, 19);
     slist_append(s, 1);
 
-    slist_len(s);
+    printf("List len is %lu\n", slist_len(s));
 
-    slist_sort(s, slist_cmp_int);
-
+    slist_print(s, _print_int);
+    slist_sort(s, _cmp_int);
+    printf("sorted.\n");
+    slist_print(s, _print_int);
 
     slist_delete(s);
 
+    SList *s1 = slist_new(NULL);
+    slist_append(s1, "John");
+    slist_append(s1, "Meraki");
+    slist_append(s1, "Hervey");
+    slist_append(s1, "Dave");
 
+    printf("List len is %lu\n", slist_len(s1));
+
+    slist_print(s1, _print_str);
+    slist_sort(s1, (SListCmpFunc*)strcmp);
+    printf("sorted.\n");
+    slist_print(s1, _print_str);
+
+    slist_delete(s1);
+
+
+    SList *basket = slist_new(eat_fruit);
+    slist_append(basket, harvest_fruit("orange", 100));
+    slist_prepend(basket, harvest_fruit("kiwi", 10));
+    slist_prepend(basket, harvest_fruit("banana", 2));
+    slist_append(basket, harvest_fruit("mango", 1));
+    slist_prepend(basket, harvest_fruit("meron", 30));
+    slist_prepend(basket, harvest_fruit("grape", 140));
+    slist_append(basket, harvest_fruit("peach", 180));
+    slist_append(basket, harvest_fruit("orange", 800));
+    slist_print(basket, show_fruit);
+
+    slist_delete(basket);
 
     return 0;
 }
