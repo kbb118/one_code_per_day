@@ -6,6 +6,8 @@ include $(MAKEFILE_DIR)/exe.mk
 
 all: ver_fdopen ver_SendRecv peer
 
+#CFLAGS += -g
+
 T_DEPLIB := logger
 ver_fdopen: $(SRC_DIR)/fdopen_vs_SendRecv.c
 	$(CC) $(CFLAGS)                        \

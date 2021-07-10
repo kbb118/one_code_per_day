@@ -12,15 +12,6 @@
 
 #include "logger.h"
 
-static inline char *
-split_str(char *str, char c)
-{
-    // c must exist in str!
-    char *ret = strchr(str, c);
-    *ret = '\0';
-    return ret + 1;
-}
-
 typedef struct {
     char *buf;        // buffer must be passed from outside.
     int buflen;
@@ -63,28 +54,32 @@ _msg_send(MsgBuf *msg)
 
 Logger *gLogger;
 
-static MsgRet
-_msg_recv(MsgBuf *msg)
+static inline MsgRet
+_msg_recv(MsgBuf *msg,
+          char *line,    /* [o] */
+          int *_len)      /* [o] */
 {
+    (void)_len;
+    int len = 0;
     int i;
     for ( i = msg->start; i < msg->end; i++ )
     {
+        line[len++] = msg->buf[i];
         if ( msg->buf[i] == '\n' )
         {
+            line[len] = '\0';
+            msg->start = i+1;
             return MSGBUF_PEER_ALIVE;
         }
     }
     if ( i == msg->end )
     {
-        int size = msg->end - msg->start;
-        // If bufsize is big enough, overlap doesn't occur...
-        // memmove(msg->buf, msg->buf + msg->start, size);
-        memcpy(msg->buf, msg->buf + msg->start, size);
+        int size = msg->buflen;
         msg->start = 0;
         msg->end = size;
 
         //logger_start(gLogger);
-        size = recv(msg->fd, msg->buf + msg->end, msg->buflen - size, 0);
+        size = recv(msg->fd, msg->buf, msg->buflen, 0);
         //logger_end(gLogger);
         if ( size < 0 )
         {
@@ -96,7 +91,16 @@ _msg_recv(MsgBuf *msg)
             return MSGBUF_PEER_DEAD;
         }
 
-        msg->end += size;
+        for ( i = msg->start; i < msg->end; i++ )
+        {
+            line[len++] = msg->buf[i];
+            if ( msg->buf[i] == '\n' )
+            {
+                line[len] = '\0';
+                msg->start = i+1;
+                return MSGBUF_PEER_ALIVE;
+            }
+        }
     }
     return MSGBUF_PEER_ALIVE;
 }
@@ -137,32 +141,7 @@ msg_recv_line(MsgBuf *msg,
               char *line,    /* [o] */
               int *len)      /* [o] */
 {
-    MsgRet ret = MSGBUF_PEER_ALIVE;
-    if ( (ret = _msg_recv(msg)) != MSGBUF_PEER_ALIVE )
-    {
-        return ret;
-    }
-
-    // End of Frame
-    if ( msg->buf[msg->start] == '\n' )
-    {
-        msg->start++;
-        strcpy(line, "\n");
-        *len = 1;
-        return MSGBUF_PEER_ALIVE;
-    }
-
-    // NOTE: If line contains multiple colons (:) , the last one is
-    //       treat as a delimiter.
-    // e.g.
-    //   When line is "foo:bar:baz", key is "foo:bar" and value is "baz".
-    char *pos = msg->buf + msg->start;
-    char *line_end = split_str(pos, '\n'); // "\n"'s pos + 1.
-    *len = line_end - pos - 1;
-    strcpy(line, pos);
-    msg->start = line_end - msg->buf;
-
-    return ret;
+    return _msg_recv(msg, line, len);
 }
 
 int
@@ -256,8 +235,8 @@ ERR:
 
 #define LINE_256 "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234\n"
 
-#define SEND_NUM (1024*1024*1024/256)
-//#define SEND_NUM (1024*1024/256)
+//#define SEND_NUM (1024*1024*1024/256)
+#define SEND_NUM (100*1024*1024/256)
 //#define SEND_NUM (5)
 
 
@@ -273,7 +252,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    int buflen = 1024 * 1024;
+    int buflen = 4096;
 
     logger_start(gLogger);
 
