@@ -1,0 +1,20 @@
+[
+ {
+  "directory": "/home/kob/go/src/github.com/kbb118/one_code_per_day/lang_etude/c/fdopen_vs_SendRecv/bin",
+  "arguments": [
+   "gcc",
+   "-Wall",
+   "-Wextra",
+   "-std=gnu99",
+   "-I../../lib",
+   "-I../include",
+   "-L../../lib",
+   "-DPEER",
+   "../src/fdopen_vs_SendRecv.c",
+   "-o",
+   "peer",
+   "-llogger"
+  ],
+  "file": "../src/fdopen_vs_SendRecv.c"
+ }
+]
